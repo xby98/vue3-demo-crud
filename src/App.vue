@@ -1,33 +1,38 @@
 <template>
   <div class="table-box">
     <!-- 标题 -->
-     <div class="title">
+    <div class="title">
       <h2>最简单的CRUD DEMO</h2>
-     </div>
-     <!-- query -->
-      <div class="query-box">
-        <el-input v-model="queryInput" placeholder="请输入姓名搜索🔍" />
-        <el-button type="primary" size="default" @click="">增加</el-button>
-        <!-- table -->
-        <el-table :data="tableData" style="width: 100%">
-    <el-table-column fixed prop="date" label="Date" width="150" />
-    <el-table-column prop="name" label="Name" width="120" />
-    <el-table-column prop="state" label="State" width="120" />
-    <el-table-column prop="city" label="City" width="120" />
-    <el-table-column prop="address" label="Address" width="600" />
-    <el-table-column prop="zip" label="Zip" width="120" />
-    <el-table-column fixed="right" label="Operations" width="120">
-      <template #default>
-        <el-button link type="primary" size="small" @click="handleRowClick"
-          >Detail</el-button
-        >
-        <el-button link type="primary" size="small">Edit</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-      </div>
+    </div>
+    <!-- query -->
+    <div class="query-box">
+      <el-input v-model="queryInput" placeholder="请输入姓名搜索🔍" />
+      <el-button type="primary" size="default" @click="">增加</el-button>
+    </div>
+    <!-- table -->
+    <el-table ref="multipleTableRef"
+    :data="tableData"
+    style="width: 100%"
+    @selection-change="handleSelectionChange" border>
+      <el-table-column type="selection" width="55" />
+      <el-table-column fixed prop="date" label="Date" width="150" />
+      <el-table-column prop="name" label="Name" width="120" />
+      <el-table-column prop="state" label="State" width="120" />
+      <el-table-column prop="city" label="City" width="120" />
+      <el-table-column prop="address" label="Address" width="600" />
+      <el-table-column prop="zip" label="Zip" width="120" />
+      <el-table-column fixed="right" label="Operations" width="120">
+        <template #default>
+          <el-button link type="primary" size="small" @click="handleRowClick">
+            Detail
+          </el-button>
+          <el-button link type="primary" size="small">Edit</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
+
 
 
 
@@ -73,12 +78,16 @@ let tableData = ref([
     tag: 'Office',
   },
 ])
+let multipleSelection = ref([])
 // 方法
 const handleRowClick = ()=>{
   console.log('click');
-  
 }
 
+const handleSelectionChange = (val) => {
+  multipleSelection.value = val
+  console.log(val);
+}
 </script>
 
 <style scoped>
@@ -89,4 +98,20 @@ const handleRowClick = ()=>{
   left: 50%;
   transform: translate(-50%,-50%);
 }
+.title{
+  text-align: center;
+}
+.query-box {
+  display: flex; /* 启用 flex 布局 */
+  justify-content: space-between; /* 确保输入框和按钮在两端 */
+  align-items: center; /* 垂直居中 */
+  margin-bottom: 20px;
+}
+.el-input {
+  width: 200px; /* 设置搜索框的宽度 */
+}
+.el-button {
+  width: 100px; /* 设置按钮的宽度，防止太小 */
+}
+
 </style>
